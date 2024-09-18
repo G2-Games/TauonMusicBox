@@ -515,7 +515,7 @@ except:
 # except:
 #     pass
 try:
-    from pypresence import Presence
+    from pypresence import Presence, ActivityType
     import asyncio
 
     discord_allow = True
@@ -24113,6 +24113,11 @@ def discord_loop():
                 if pctl.playing_state == 3:
                     album = radiobox.loaded_station["title"]
 
+            end_time = None
+            if tr.length:
+                end_time = start_time + tr.length
+                print(end_time)
+
             if len(album) == 1:
                 album += " "
 
@@ -24126,12 +24131,20 @@ def discord_loop():
                 if url:
                     large_image = url
                     small_image = "tauon-standard"
-                RPC.update(pid=pid,
-                           state=album,
-                           details=title,
-                           start=int(start_time),
-                           large_image=large_image,
-                           small_image=small_image,)
+
+                search_string = "https://music.g2games.dev/listenalong"
+
+                RPC.update(
+                            activity_type = ActivityType.LISTENING,
+                            pid=pid,
+                            state=album,
+                            details=title,
+                            start=int(start_time),
+                            end=int(end_time),
+                            large_image=large_image,
+                            small_image=small_image,
+                            buttons=[{"label": "Listen", "url": search_string}]
+                        )
 
             else:
                 # print("Discord RPC - Stop")
