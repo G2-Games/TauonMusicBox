@@ -24161,7 +24161,6 @@ def discord_loop():
                             end=int(end_time),
                             large_image=large_image,
                             small_image=small_image,
-                            buttons=[{"label": "Listen", "url": search_string}]
                         )
 
             else:
